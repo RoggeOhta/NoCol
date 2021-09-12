@@ -9,8 +9,8 @@
 #include "number_generator.hpp"
 
 
-int WIN_WIDTH = 1920;
-int WIN_HEIGHT = 1080;
+int WIN_WIDTH = 2560;
+int WIN_HEIGHT = 1600;
 const uint32_t max_history = 100;
 
 const sf::Vector3f stable_color(0, 255, 0);
@@ -89,7 +89,7 @@ bool update(std::vector<Ball>& balls, float speed)
 
     const uint32_t nBalls = static_cast<uint32_t>(balls.size());
 	const float dt = 0.008f;
-	const float attraction_force = 50.0f;
+	const float attraction_force = 2.0f;
 	const float attraction_force_bug = 0.01f;
 	const sf::Vector2f center_position(WIN_WIDTH * 0.5f, WIN_HEIGHT * 0.5f);
 	const float attractor_threshold = 50.0f;
@@ -99,7 +99,9 @@ bool update(std::vector<Ball>& balls, float speed)
 		// Attraction to center
 		const sf::Vector2f to_center = center_position - current_ball.position;
 		const float dist_to_center = length(to_center);
-		current_ball.velocity += attraction_force_bug * to_center;
+//		current_ball.velocity += attraction_force_bug * to_center;
+		current_ball.velocity += attraction_force * to_center;
+
 
 		for (uint32_t k=i+1; k<nBalls; k++) {
 		    Ball& collider = balls[k];
@@ -194,7 +196,7 @@ int main()
 
     sf::ContextSettings settings;
     settings.antialiasingLevel = 8;
-    sf::RenderWindow window(sf::VideoMode(conf.win_width, conf.win_height), "NoCol", sf::Style::Fullscreen, settings);
+    sf::RenderWindow window(sf::VideoMode(conf.win_width, conf.win_height), "NoCol", sf::Style::Default, settings);
     window.setVerticalSyncEnabled(true);
 
     float speedDownFactor = 1;
@@ -267,6 +269,9 @@ int main()
 		}
 
 		bool stable = true;
+		std::cout << "SpeedDownCounter" << speedDownCounter << std::endl;
+		std::cout << "SpeedDownFactor" << speedDownFactor << std::endl;
+		std::cout << std::endl;
 		if (!speedDownCounter) {
 			for (Ball& ball : balls) {
 				ball.stable = true;
@@ -326,12 +331,14 @@ int main()
         }
 		center_of_mass /= float(balls.size());
 
-		const float com_r = 4.0f;
-		/*sf::CircleShape com_representation(com_r);
-		com_representation.setFillColor(sf::Color::Cyan);
-		com_representation.setOrigin(com_r, com_r);
-		com_representation.setPosition(center_of_mass);
-		window.draw(com_representation, rs);*/
+//      Uncomment under code will display center of mass
+
+//		const float com_r = 4.0f;
+//		sf::CircleShape com_representation(com_r);
+//		com_representation.setFillColor(sf::Color::Cyan);
+//		com_representation.setOrigin(com_r, com_r);
+//		com_representation.setPosition(center_of_mass);
+//		window.draw(com_representation, rs);
 
 		window.display();
 

@@ -10,8 +10,9 @@ file(GLOB source_files
 set(SOURCES ${source_files})
 
 # Detect and add SFML
-set(CMAKE_MODULE_PATH "${CMAKE_SOURCE_DIR}/cmake_modules" ${CMAKE_MODULE_PATH})
-find_package(SFML 2 REQUIRED COMPONENTS network audio graphics window system)
+set(SFML_STATIC_LIBRARIES TRUE)
+set(SFML_DIR "${CMAKE_SOURCE_DIR}/cmake_modules/SFML/lib/cmake/SFML")
+find_package(SFML 2.5 REQUIRED COMPONENTS network audio graphics window system)
 
 add_executable(${PROJECT_NAME} ${SOURCES})
 target_include_directories(${PROJECT_NAME} PRIVATE "include" "lib")
